@@ -1,5 +1,4 @@
-import React from 'react';
-// Replace with your actual asset paths
+
 import brainBg from './assets/medical-bg.webp'; 
 import logoImage from './assets/logo.png'; 
 import doctor from './assets/doctor.png';
