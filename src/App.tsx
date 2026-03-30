@@ -1,7 +1,8 @@
-
 import brainBg from './assets/medical-bg.webp'; 
 import logoImage from './assets/logo.png'; 
 import doctor from './assets/doctor.png';
+import googlePlayBadge from './assets/google-play-badge.svg'; // 🟢 Replace placeholders with your actual asset imports
+import appStoreBadge from './assets/app-store-badge.svg'; // 🟢 Replace placeholders with your actual asset imports
 
 export default function App() {
   return (
@@ -23,9 +24,14 @@ export default function App() {
             ))}
           </div>
 
-          <button className="bg-[#134e4a] text-white px-6 py-2 rounded-xl font-semibold text-[14px] hover:bg-[#0c2f2d] transition-all">
-            Download
-          </button>
+          <div className="flex items-center gap-2">
+            <a href="#" className="h-8 transition-transform hover:scale-105" target="_blank" rel="noopener noreferrer">
+              <img src={googlePlayBadge} alt="Get it on Google Play" className="h-full object-contain" />
+            </a>
+            <a href="#" className="h-8 transition-transform hover:scale-105" target="_blank" rel="noopener noreferrer">
+              <img src={appStoreBadge} alt="Download on the App Store" className="h-full object-contain" />
+            </a>
+          </div>
         </div>
       </nav>
 
@@ -47,17 +53,41 @@ export default function App() {
             <p className="font-normal text-[15px] leading-[24px] text-slate-500 max-w-lg">
               Upload your medical reports for a dual-layer review. Our AI analyzes the data while board-certified specialists verify every detail.
             </p>
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <div className="bg-white px-5 py-3 rounded-2xl shadow-sm border border-teal-50 flex items-center gap-3">
-                <div className="flex flex-col">
-                  <div className="flex items-baseline gap-1">
-                    <span className="font-bold text-[24px] text-[#134e4a]">₹500</span>
-                    <span className="font-bold text-[11px] text-teal-500 uppercase">| AI</span>
+            
+            <div className="flex flex-col gap-6 pt-2">
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="bg-white px-5 py-3 rounded-2xl shadow-sm border border-teal-50 flex items-center gap-3">
+                  <div className="flex flex-col">
+                    <div className="flex items-baseline gap-1">
+                      <span className="font-bold text-[24px] text-[#134e4a]">₹500</span>
+                      <span className="font-bold text-[11px] text-teal-500 uppercase">| AI</span>
+                    </div>
+                    <span className="font-normal text-[11px] text-[#94A3B8]">Per report analysis</span>
                   </div>
-                  <span className="font-normal text-[11px] text-[#94A3B8]">Per report analysis</span>
                 </div>
               </div>
-              <button className="bg-[#134e4a] text-white px-10 py-4 rounded-2xl font-semibold text-[15px] hover:bg-[#0c2f2d] shadow-lg shadow-teal-900/10 transition-all">Get Started</button>
+
+              {/* 🟢 Redesigned & Compact Hero Download Section */}
+              <div className="bg-white/70 p-5 rounded-3xl border border-teal-50 shadow-inner flex flex-col md:flex-row items-center gap-4 md:gap-6 max-w-lg">
+                
+                {/* 🟢 Tighter Text Column (Left/First) */}
+                <div className="text-center md:text-left flex-1 space-y-0.5">
+                  <p className="font-normal text-slate-500 text-[13px]">Available now on</p>
+                  <p className="font-bold text-[#134e4a] text-[18px]">PramanAI App</p>
+                  <p className="font-medium text-teal-600 text-[11px]">AI Insights & Doctor Verification.</p>
+                </div>
+
+                {/* 🟢 Vertical Badges Column (Right/Second) */}
+                <div className="flex flex-col gap-2.5 min-w-[160px]">
+                  <a href="#" target="_blank" rel="noopener noreferrer" className="transition-transform hover:scale-105">
+                    <img src={googlePlayBadge} alt="Get it on Google Play" className="h-10 w-auto" />
+                  </a>
+                  <a href="#" target="_blank" rel="noopener noreferrer" className="transition-transform hover:scale-105">
+                    <img src={appStoreBadge} alt="Download on the App Store" className="h-10 w-auto" />
+                  </a>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -210,7 +240,17 @@ export default function App() {
                   <span className="text-white font-bold text-[48px]">₹500</span>
                   <span className="text-teal-400 font-bold text-[12px]">/Report</span>
                </div>
-               <button className="w-full bg-teal-400 text-[#134e4a] py-4 rounded-xl font-bold text-[15px] hover:bg-teal-300 transition-all">Analyze Now</button>
+               <div className="w-full space-y-3">
+                 <button className="w-full bg-teal-400 text-[#134e4a] py-4 rounded-xl font-bold text-[15px] hover:bg-teal-300 transition-all">Analyze Now (Web Portal)</button>
+                 <div className="flex items-center justify-center gap-3 opacity-80 pt-1">
+                   <a href="#" className="h-7" target="_blank" rel="noopener noreferrer">
+                     <img src={googlePlayBadge} alt="Get it on Google Play" className="h-full object-contain" />
+                   </a>
+                   <a href="#" className="h-7" target="_blank" rel="noopener noreferrer">
+                     <img src={appStoreBadge} alt="Download on the App Store" className="h-full object-contain" />
+                   </a>
+                 </div>
+               </div>
             </div>
           </div>
         </div>
@@ -235,8 +275,6 @@ export default function App() {
           </div>
         </div>
       </section>
-
-      
 
       {/* 🟢 7. FOOTER */}
       <footer className="py-10 bg-white border-t border-slate-100 flex flex-col items-center gap-3">

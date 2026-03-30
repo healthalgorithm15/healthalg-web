@@ -1,0 +1,17 @@
+# PramanAI Robots.txt - Optimized for Medical SEO
+User-agent: *
+Allow: /
+
+# Block search engines from indexing private or technical folders
+Disallow: /api/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /login/
+Disallow: /signup/
+
+# Point Google directly to your Sitemap (Update the URL once your domain is live)
+Sitemap: https://www.pramanai.com/sitemap.xml
+
+# Ensure images are crawlable for Google Images
+User-agent: Googlebot-Image
+Allow: /
