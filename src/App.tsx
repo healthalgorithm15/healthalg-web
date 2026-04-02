@@ -28,7 +28,7 @@ export default function App() {
     const fetchReviews = async () => {
       try {
         // REPLACE this with your actual Azure App Service URL later
-        const response = await fetch(`${API_URL}/approved`);
+        const response = await fetch(`${API_URL}/api/reviews/approved`);
         const data = await response.json();
         setReviews(data);
         setLoading(false);
