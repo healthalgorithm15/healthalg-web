@@ -13,6 +13,10 @@ interface Review {
   reportType?: string;
 }
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://healthalgorithm-a5aqe6ckgzdmb0cf.southindia-01.azurewebsites.net/api';
+
+
+
 export default function App() {
 
   // 2. Initialize the state for reviews
@@ -24,7 +28,7 @@ export default function App() {
     const fetchReviews = async () => {
       try {
         // REPLACE this with your actual Azure App Service URL later
-        const response = await fetch('https://your-azure-backend.com/api/reviews/approved');
+        const response = await fetch(`${API_URL}/approved`);
         const data = await response.json();
         setReviews(data);
         setLoading(false);
@@ -51,7 +55,7 @@ const handleReviewSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   };
 
   try {
-    const response = await fetch('https://your-azure-backend.com/api/reviews/submit', {
+    const response = await fetch(`${API_URL}/api/reviews/submit`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(reviewData),
