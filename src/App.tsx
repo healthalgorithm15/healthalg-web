@@ -3,8 +3,71 @@ import logoImage from './assets/logo.png';
 import doctor from './assets/doctor.png';
 import googlePlayBadge from './assets/google-play-badge.svg'; // 🟢 Replace placeholders with your actual asset imports
 import appStoreBadge from './assets/app-store-badge.svg'; // 🟢 Replace placeholders with your actual asset imports
+import React, { useEffect, useState } from 'react';
+
+interface Review {
+  _id?: string;
+  patientName: string;
+  comment: string;
+  rating: number;
+  reportType?: string;
+}
 
 export default function App() {
+
+  // 2. Initialize the state for reviews
+ const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // 3. Fetch reviews from your backend
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        // REPLACE this with your actual Azure App Service URL later
+        const response = await fetch('https://your-azure-backend.com/api/reviews/approved');
+        const data = await response.json();
+        setReviews(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error loading reviews:", error);
+        setLoading(false);
+      }
+    };
+    fetchReviews();
+  }, []);
+
+  const [submitting, setSubmitting] = useState(false);
+
+const handleReviewSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setSubmitting(true);
+
+  const formData = new FormData(e.currentTarget);
+  const reviewData = {
+    patientName: formData.get('patientName'),
+    rating: Number(formData.get('rating')),
+    comment: formData.get('comment'),
+    reportType: "General Analysis" // Placeholder
+  };
+
+  try {
+    const response = await fetch('https://your-azure-backend.com/api/reviews/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(reviewData),
+    });
+
+    if (response.ok) {
+      alert("Thank you! Your review has been sent for verification.");
+      (e.target as HTMLFormElement).reset();
+    }
+  } catch (error) {
+    console.error("Submission error:", error);
+    alert("Something went wrong. Please try again.");
+  } finally {
+    setSubmitting(false);
+  }
+};
   return (
     <div className="min-h-screen bg-white font-sans text-[#0f3a37] selection:bg-teal-100 scroll-smooth">
       
@@ -256,24 +319,74 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🟢 5. REVIEWS */}
+     {/* 🟢 5. REVIEWS - Now Dynamic */}
       <section id="reviews" className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <h3 className="font-bold text-[24px] text-[#134e4a] text-center mb-12">Patient Stories</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              "The summary made sense of 10 pages of jargon instantly.",
-              "Verified within 4 hours. Incredible speed and clarity.",
-              "Finally understood my report without panic."
-            ].map((text, i) => (
-              <div key={i} className="p-7 rounded-3xl bg-[#f8fcfc] border border-teal-50 transition-all hover:scale-[1.02] hover:shadow-md">
-                <div className="flex gap-1 mb-3 text-teal-400 text-xs">★★★★★</div>
-                <p className="font-normal text-[13px] leading-[20px] text-slate-600 italic mb-4">"{text}"</p>
-                <p className="font-bold text-[14px] text-[#134e4a]">Verified Patient</p>
-              </div>
-            ))}
-          </div>
+          
+          {/* Show a loading message if data hasn't arrived yet */}
+          {loading ? (
+            <p className="text-center text-slate-400">Loading stories...</p>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6">
+             {reviews.map((rev: Review, i: number) => (
+  <div key={rev._id || i} className="p-7 rounded-3xl bg-[#f8fcfc] border border-teal-50 ...">
+    {/* The errors on rev.rating, rev.comment, etc. will now disappear! */}
+    <div className="flex gap-1 mb-3 text-teal-400 text-xs">
+      {"★".repeat(rev.rating || 5)}
+    </div>
+    <p className="font-normal text-[13px] leading-[20px] text-slate-600 italic mb-4">
+      "{rev.comment}"
+    </p>
+    <p className="font-bold text-[14px] text-[#134e4a]">
+      {rev.patientName}
+    </p>
+  </div>
+))}
+            </div>
+          )}
         </div>
+
+        {/* --- Review Submission Form --- */}
+<div className="mt-16 max-w-2xl mx-auto bg-[#f8fcfc] border border-teal-100 p-8 rounded-[2.5rem]">
+  <h4 className="font-bold text-[20px] text-[#134e4a] text-center mb-6">Share Your Experience</h4>
+  
+  <form onSubmit={handleReviewSubmit} className="space-y-4">
+    <div className="grid md:grid-cols-2 gap-4">
+      <input 
+        name="patientName"
+        type="text" 
+        placeholder="Your Name" 
+        required
+        className="w-full px-4 py-3 rounded-xl border border-teal-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-[14px]"
+      />
+      <select 
+        name="rating"
+        className="w-full px-4 py-3 rounded-xl border border-teal-50 bg-white text-[14px]"
+      >
+        <option value="5">5 Stars (Excellent)</option>
+        <option value="4">4 Stars (Great)</option>
+        <option value="3">3 Stars (Good)</option>
+      </select>
+    </div>
+    
+    <textarea 
+      name="comment"
+      placeholder="How did PramanAI help you today?" 
+      required
+      rows={3}
+      className="w-full px-4 py-3 rounded-xl border border-teal-50 focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-[14px]"
+    ></textarea>
+
+    <button 
+      type="submit" 
+      disabled={submitting}
+      className="w-full bg-[#134e4a] text-white py-4 rounded-xl font-bold text-[14px] hover:bg-teal-900 transition-all disabled:opacity-50"
+    >
+      {submitting ? "Submitting..." : "Submit Review"}
+    </button>
+  </form>
+</div>
       </section>
 
       {/* 🟢 7. FOOTER */}
