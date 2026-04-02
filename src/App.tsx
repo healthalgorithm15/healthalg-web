@@ -13,7 +13,7 @@ interface Review {
   reportType?: string;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://healthalgorithm-a5aqe6ckgzdmb0cf.southindia-01.azurewebsites.net/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://healthalgorithm-a5aqe6ckgzdmb0cf.southindia-01.azurewebsites.net';
 
 
 
